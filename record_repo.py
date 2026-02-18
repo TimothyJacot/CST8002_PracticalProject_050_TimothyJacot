@@ -54,5 +54,43 @@ class RecordRepository:
             raise Exception(f"An error occurred while loading records: {str(e)}")
         
         return records
+        def save_records(self, records):
+        """
+        Docstring for save_records
+        Saves provided list of Record objects to new CSV file.
+        Filename is generated using UUID.
+        Returns created file name.
+
+        """
+        unique_filename = f"{uuid.uuid4()}.csv"
+
+        try:
+            with open(unique_filename, mode='w', newLine='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+
+                writer.writerow([
+                    "site_id", 
+                    "year", 
+                    "diver_id",
+                    "transect",
+                    "transect_distance",
+                    "species_code",
+                    "count"
+                ])
+                for record in records:
+                    writer.writerow([
+                        record.get_site_id(),
+                        record.get_year(),
+                        record.get_diver_id(),
+                        record.get_transect(),
+                        record.get_transect_distance(),
+                        record.get_species_code(),
+                        record.get_count()
+                    ])
+        except Exception as e:
+            raise Exception(f"An error occurred while saving records: {str(e)}")
+        
+        return unique_filename
+                          
                   
 
